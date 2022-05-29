@@ -1,0 +1,16 @@
+pandas
+
+dash
+
+dash_bootstrap_components
+
+gcsfs
+
+openpyxl
+
+xlrd
+
+pyorbital.orbital
+
+plotly.graph_objects
+
