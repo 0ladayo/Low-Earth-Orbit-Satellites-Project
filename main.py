@@ -24,7 +24,7 @@ import plotly.graph_objects as go
 # In[2]:
 
 
-api_token = 'pk.eyJ1IjoiMGxhZGF5byIsImEiOiJja3o4bXRlc2cweDE1MnVtdWJuZjBkMW1rIn0.Ulh37a4zmejYBzZ5Pfm8iw'
+api_token = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 
 
 # In[3]:
@@ -65,6 +65,8 @@ def make_break(num_breaks):
 
 
 _app = dash.Dash(__name__, external_stylesheets = [dbc.themes.GRID])
+
+app = _app.server
 
 _app.layout = html.Div([
     
