@@ -37,3 +37,6 @@
 
 >[Low Earth Orbit Satellites Project Web Application](https://leo-satellite-overview-project.nw.r.appspot.com/)
 
+### License
+
+> see the [License](https://github.com/0ladayo/Low-Earth-Orbit-Satellites-Project/blob/master/LICENSE.txt) file for license rights and limitations (MIT)
