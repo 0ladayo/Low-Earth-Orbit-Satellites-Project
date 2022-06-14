@@ -182,7 +182,7 @@ def active_leo_sat(request):
 
   active_leo_sat_df = pd.merge(active_leo_sat_df, master_df, how ='left', on =['ObjectName'])
 
-  active_leo_sat_df['Purpose'] = active_leo_sat_df['Purpose'].replace(np.nan, 'Others')
+  active_leo_sat_df['Purpose'] = active_leo_sat_df['Purpose'].replace(np.nan, 'Miscellaneous')
 
   active_leo_sat_df = active_leo_sat_df.drop_duplicates(subset = 'ObjectName')
 
