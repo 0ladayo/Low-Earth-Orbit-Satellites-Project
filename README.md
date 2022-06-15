@@ -30,12 +30,16 @@
 
 #### Google App Engine (GAE)
 
-> google app engine was used to deploy the main.py file
+> main.py file was deployed to Google App Engine
 
 
 ### Output
 
 >[Low Earth Orbit Satellites Project Web Application](https://leo-satellite-overview-project.nw.r.appspot.com/)
+
+### Blog
+
+> read more here [Building a web application for active low earth orbit satellites](https://medium.com/@Oladayo/building-a-web-application-for-active-low-earth-orbit-satellites-74fcafb16df)
 
 ### License
 
