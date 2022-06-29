@@ -292,7 +292,7 @@ def plot_map(n, satellite_name):
 
         obj_name_list.append(satellite_name)
         
-        for i in range(21):
+        for i in range(31):
             
             time_list.append(time-timedelta(minutes = i))
         
