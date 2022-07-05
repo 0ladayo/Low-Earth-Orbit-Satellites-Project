@@ -10,7 +10,4 @@ openpyxl
 
 xlrd
 
-pyorbital.orbital
-
-plotly.graph_objects
-
+pyorbital

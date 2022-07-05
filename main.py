@@ -24,7 +24,7 @@ import plotly.graph_objects as go
 # In[2]:
 
 
-api_token = 'pk.eyJ1IjoiMGxhZGF5byIsImEiOiJja3o4bXRlc2cweDE1MnVtdWJuZjBkMW1rIn0.Ulh37a4zmejYBzZ5Pfm8iw'
+api_token = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 
 
 # In[3]:
@@ -65,6 +65,8 @@ def make_break(num_breaks):
 
 
 _app = dash.Dash(__name__, external_stylesheets = [dbc.themes.GRID])
+
+app = _app.server
 
 _app.layout = html.Div([
     
@@ -282,19 +284,25 @@ def plot_map(n, satellite_name):
 
         orb = Orbital(satellite_name)
 
-        lon, lat, alt = orb.get_lonlatalt(time)
+        lon, lat = orb.get_lonlatalt(time)[0], orb.get_lonlatalt(time)[1]
 
         lon_list.append(lon)
 
         lat_list.append(lat)
 
-        alt_list.append(alt)
-        
-        time_list.append(time)
-
         obj_name_list.append(satellite_name)
+        
+        for i in range(31):
+            
+            time_list.append(time-timedelta(minutes = i))
+        
+        for i in time_list:
+            
+            alt_list.append(orb.get_lonlatalt(i)[2])
 
-        df_4 = pd.DataFrame({'ObjectName': obj_name_list, 'TimeStamp': time_list, 'Latitude': lat_list, 'Longitude': lon_list, 'Altitude': alt_list})
+        df_4 = pd.DataFrame({'ObjectName': obj_name_list, 'Latitude': lat_list, 'Longitude': lon_list})
+        
+        df_5 = pd.DataFrame({'TimeStamp': time_list, 'Altitude': alt_list})
 
         lon_list.clear()
 
@@ -303,8 +311,12 @@ def plot_map(n, satellite_name):
         alt_list.clear()
         
         time_list.clear()
+        
+        obj_name_list.clear()
 
         df_4_copy = df_4.copy()
+        
+        df_5_copy = df_5.copy()
 
         fig =go.Figure(go.Scattermapbox(
 
@@ -328,7 +340,7 @@ def plot_map(n, satellite_name):
 
         height = 800, hovermode = 'closest')
         
-        fig2 = go.Figure(go.Scatter(x = df_4_copy['TimeStamp'], y = df_4_copy['Altitude']))
+        fig2 = go.Figure(go.Scatter(x = df_5_copy['TimeStamp'], y = df_4_copy['Altitude']))
         
         fig2.update_layout(margin = dict(l = 20, r = 20, t = 20, b = 20),
                           
