@@ -2,6 +2,9 @@
 
 > In this project, I built a web application that shows the position and altitude of active satellites orbiting the Low Earth Orbit in near real time. The web application also shows the distribution of the count of active low earth orbit satellites vs year of launch and also the proportion of active low earth orbit satellites by purpose.
 
+### Workflow
+![a't text](https://github.com/0ladayo/Low-Earth-Orbit-Satellites-Project/blob/master/Workflow.png)
+
 ### Languages and Tools Used
 
 #### Pandas
