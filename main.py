@@ -340,7 +340,7 @@ def plot_map(n, satellite_name):
 
         height = 800, hovermode = 'closest')
         
-        fig2 = go.Figure(go.Scatter(x = df_5_copy['TimeStamp'], y = df_4_copy['Altitude']))
+        fig2 = go.Figure(go.Scatter(x = df_5_copy['TimeStamp'], y = df_5_copy['Altitude']))
         
         fig2.update_layout(margin = dict(l = 20, r = 20, t = 20, b = 20),
                           
