@@ -292,7 +292,7 @@ def plot_map(n, satellite_name):
 
         obj_name_list.append(satellite_name)
         
-        for i in range(31):
+        for i in range(120):
             
             time_list.append(time-timedelta(minutes = i))
         
@@ -346,7 +346,7 @@ def plot_map(n, satellite_name):
                           
                           plot_bgcolor = 'rgb(255,255,255)', paper_bgcolor = 'rgb(255,255,255)',
                           
-                          height = 800, title = {'text': 'Altitude of' + ' ' + str(satellite_name) + ' ' + 'in near real time', 'x':0.5, 'y':0.98}, 
+                          height = 800, title = {'text': 'Altitude Trend of' + ' ' + str(satellite_name) + ' ' + 'in near real time', 'x':0.5, 'y':0.98}, 
                           
                           ).update_yaxes(gridcolor = 'rgb(243,243,243)', title ='Altitude (km)').update_xaxes(title = 'Timestamp', linecolor = 'rgb(243,243,243)')
         
