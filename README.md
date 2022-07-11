@@ -2,12 +2,6 @@
 
 > In this project, I built a web application that shows the position and altitude of active satellites orbiting the Low Earth Orbit in near real time. The web application also shows the distribution of the count of active low earth orbit satellites vs year of launch and also the proportion of active low earth orbit satellites by purpose.
 
-### Web App Screenshot
-
-> due to domain update from where Pyorbital library pulls data from, two charts are currently missing from the web application but that will be fixed with the release of the updated version of the library. Pls see what the web app looks like in its static form.
-
-![](https://github.com/0ladayo/Low-Earth-Orbit-Satellites-Project/blob/master/Web_App_ScreenShot.jpg)
-
 ### Workflow
 ![](https://github.com/0ladayo/Low-Earth-Orbit-Satellites-Project/blob/master/Workflow.png)
 
