@@ -78,6 +78,21 @@ _app.layout = html.Div([
         
     ),
     
+    dbc.Row([dbc.Col([html.Div([
+
+        html.H1('Overview of Active Satellites in Low Earth Orbit',
+        
+        style = {'textAlign':'center', 'font-family':'Open Sans'})
+
+
+    ])
+
+
+    ], md = 12)
+
+
+    ]),
+    
     html.Div(make_break(1)),
     
     dbc.Row([dbc.Col([html.Div([
