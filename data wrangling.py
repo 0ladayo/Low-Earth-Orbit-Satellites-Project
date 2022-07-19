@@ -19,34 +19,98 @@ import functions_framework
 @functions_framework.http
 
 def active_leo_sat(request):
-
-  active_sat_df = pd.read_csv('https://celestrak.com/NORAD/elements/gp.php?GROUP=active&FORMAT=csv')
-
-  active_leo_sat_df = active_sat_df.loc[(active_sat_df['MEAN_MOTION']>=11.25) & (active_sat_df['ECCENTRICITY']<0.25)] 
   
-  active_leo_sat_df.reset_index(drop = True, inplace = True)
-
-  active_leo_sat_df = active_leo_sat_df.drop(active_leo_sat_df.loc[:,'EPOCH':'MEAN_MOTION_DDOT'], axis = 1)
-
-  for object_id in active_leo_sat_df['OBJECT_ID']:
+  def read_data():
     
-    if '-' in object_id:
-        
-        index = object_id.find('-')
-        
-        object_id_format = object_id[0:index]
-        
-        active_leo_sat_df['OBJECT_ID'] = active_leo_sat_df['OBJECT_ID'].replace(to_replace = object_id, value = object_id_format)
-        
-    else:
-        
-        pass
+    """Reads the active satellite data csv file link 
+    
+    into a active satellites DataFrame"""
+    
+    active_sat_df = pd.read_csv('https://celestrak.com/NORAD/elements/gp.php?GROUP=active&FORMAT=csv')
+    
+    return active_sat_df
 
-  active_leo_sat_df.columns = ['ObjectName', 'YearOfLaunch']
-  
-  active_leo_sat_df = active_leo_sat_df.drop_duplicates(subset = 'ObjectName')
-  
-  active_leo_sat_df.reset_index(drop = True, inplace = True)
+  active_sat_df = read_data()
+
+  def filter_data():
+    
+    """Filters out the active satellites in Low Earth Orbit
+    
+    out of the active satellites DataFame and reset the index 
+    
+    of the new DataFrame"""
+    
+    active_sat_leo_df = active_sat_df.loc[(active_sat_df['MEAN_MOTION']>=11.25) & (active_sat_df['ECCENTRICITY']<0.25)]
+    
+    active_sat_leo_df.reset_index(drop = True, inplace = True)
+    
+    return active_sat_leo_df
+
+  active_sat_leo_df = filter_data()
+
+  def drop_columns():
+    
+    """Drops Unwanted columns in the active satellites in Low Earth 
+    
+    Orbit DataFrame"""
+    
+    active_sat_leo_df1 = active_sat_leo_df.drop(
+        
+        active_sat_leo_df.loc[:,'EPOCH':'MEAN_MOTION_DDOT'], axis = 1)
+    
+    return active_sat_leo_df1
+
+  active_sat_leo_df1 = drop_columns()
+
+  def extract_replace():
+    
+    """Extract the year the satellite was launched from
+    
+    the object_id column and replace the object id data
+    
+    with the year data"""
+    
+    for object_id in active_sat_leo_df1['OBJECT_ID']:
+        
+        if '-' in object_id:
+            
+            index = object_id.find('-')
+            
+            object_id_slice = object_id[0:index]
+            
+            active_sat_leo_df1['OBJECT_ID'] = active_sat_leo_df1['OBJECT_ID'].replace(
+            
+            to_replace = object_id, value = object_id_slice)
+            
+    return active_sat_leo_df1
+
+  active_sat_leo_df1 = extract_replace()
+
+  def rename_columns():
+    
+    """Rename the Columns of the DataFrame"""
+    
+    active_sat_leo_df1.columns = ['ObjectName', 'YearOfLaunch']
+    
+    return active_sat_leo_df1
+
+  active_sat_leo_df1 = rename_columns()
+
+  def drop_duplicates():
+    
+    """Drop duplicates if any from the DataFrame
+    
+    and reset index"""
+    
+    active_sat_leo_df2 = active_sat_leo_df1.drop_duplicates()
+    
+    active_sat_leo_df2.reset_index(drop = True, inplace = True)
+    
+    return active_sat_leo_df2
+
+  active_sat_leo_df2 = drop_duplicates()
+
+  #Collects satellites csv file links based on the purpose into lists 
 
   weather_sat_list = ['https://celestrak.com/NORAD/elements/gp.php?GROUP=weather&FORMAT=csv',
                     
@@ -133,8 +197,14 @@ def active_leo_sat(request):
                           'https://celestrak.com/NORAD/elements/gp.php?GROUP=cubesat&FORMAT=csv',
                           
                           'https://celestrak.com/NORAD/elements/gp.php?GROUP=other&FORMAT=csv']
-                
-  def sat_classification(sat_list):
+
+  def sat_class_data(sat_list):
+    
+    """Takes sat_list as an argument which is a list data structure 
+    
+    containing satellite csv file links, read the data in the list 
+    
+    and join the data to an empty DataFrame df"""
     
     df = pd.DataFrame()
     
@@ -144,50 +214,107 @@ def active_leo_sat(request):
         
         df = pd.concat([df, sats_df])
         
-    df.reset_index(drop = True, inplace = True)
+    df.reset_index(drop = True, inplace = True) #reset the index of the DataFrame
     
-    df = df.drop(df.loc[:,'OBJECT_ID':'MEAN_MOTION_DDOT'], axis = 1)
+    df = df.drop(df.loc[:,'OBJECT_ID':'MEAN_MOTION_DDOT'], axis = 1) #drops unwanted columns of the DataFrame
     
-    df.columns = ['ObjectName']
+    df.columns = ['ObjectName'] #rename the column name of the Series
     
     return df
-  
-  weather_sat_df = sat_classification(weather_sat_list)
+
+  #Obtains data for each of the lists defined above and create a new column purpose
+
+  weather_sat_df = sat_class_data(weather_sat_list)
 
   weather_sat_df['Purpose'] = 'Weather'
 
-  earth_observation_sat_df = sat_classification(earth_observation_sat_list)
+  earth_observation_sat_df = sat_class_data(earth_observation_sat_list)
 
-  earth_observation_sat_df['Purpose'] = 'Earth Observation'
+  earth_observation_sat_df['Purpose'] = 'Earth Observation'      
 
-  communications_sat_df = sat_classification(communications_sat_list)
+  communications_sat_df = sat_class_data(communications_sat_list)
 
   communications_sat_df['Purpose'] = 'Communications'
 
-  navigation_sat_df = sat_classification(navigation_sat_list)
+  navigation_sat_df = sat_class_data(navigation_sat_list)
 
-  navigation_sat_df['Purpose'] = 'Navigation'
+  navigation_sat_df['Purpose'] = 'Navigation' 
 
-  scientific_sat_df = sat_classification(scientific_sat_list)
+  scientific_sat_df = sat_class_data(scientific_sat_list)
 
-  scientific_sat_df['Purpose'] = 'Scientific'
+  scientific_sat_df['Purpose'] = 'Scientific'  
 
-  miscellaneous_sat_df = sat_classification(miscellaneous_sat_list)
+  miscellaneous_sat_df = sat_class_data(miscellaneous_sat_list)
 
-  miscellaneous_sat_df['Purpose'] = 'Miscellaneous'
+  miscellaneous_sat_df['Purpose'] = 'Miscellaneous' 
 
-  master_df = pd.concat([weather_sat_df, earth_observation_sat_df, communications_sat_df, navigation_sat_df, scientific_sat_df, miscellaneous_sat_df])
+  def join_sat_list():
+    
+    """join all the data from each category(purpose) 
+    
+    into one master DataFrame and reset the index"""
+    
+    
+    master_df = pd.concat([weather_sat_df, earth_observation_sat_df, 
+                           
+                           communications_sat_df, navigation_sat_df, 
+                           
+                           scientific_sat_df, miscellaneous_sat_df])
+    
+    master_df.reset_index(drop = True, inplace = True)
+    
+    return master_df
 
-  master_df.reset_index(drop = True, inplace = True)
+  master_df = join_sat_list()
 
-  active_leo_sat_df = pd.merge(active_leo_sat_df, master_df, how ='left', on =['ObjectName'])
+  def merge_data():
+    
+    """Merge both the active low earth orbit satellites 
+    
+    DataFrame active_sat_leo_df2 and the master DataFrame
+    
+    master_df into one DataFrame active_sat_leo_df3"""
+    
+    active_sat_leo_df3 = pd.merge(active_sat_leo_df2, master_df, how ='left', on =['ObjectName'])
+    
+    return active_sat_leo_df3
 
-  active_leo_sat_df['Purpose'] = active_leo_sat_df['Purpose'].replace(np.nan, 'Miscellaneous')
+  active_sat_leo_df3 = merge_data()
 
-  active_leo_sat_df = active_leo_sat_df.drop_duplicates(subset = 'ObjectName')
+  def replace_nan():
+    
+    """Replace NaN values in the Purpose Column with
+    
+    Miscellaneous"""
+    
+    active_sat_leo_df3['Purpose'] = active_sat_leo_df3['Purpose'].replace(np.nan, 'Miscellaneous')
+    
+    return active_sat_leo_df3
 
-  active_leo_sat_df.reset_index(drop = True, inplace = True)
+  active_sat_leo_df3 = replace_nan()
 
-  active_leo_sat_df.to_csv('gs://active-leo-satellites/active leo satellites.csv', index = False)
+  def drop_duplicates2():
+    
+    """Drop duplicates if any from the DataFrame
+    
+    and reset index"""
+    
+    active_sat_leo_df4 = active_sat_leo_df3.drop_duplicates(subset = 'ObjectName')
+    
+    active_sat_leo_df4.reset_index(drop = True, inplace = True)
+    
+    return active_sat_leo_df4
+
+  active_sat_leo_df4 = drop_duplicates2()
+
+  def store_data():
+    
+    """Stores the DataFrame in a google cloud storage
+    
+    bucket"""
+    
+    return active_sat_leo_df4.to_csv('gs://active-leo-satellites/active leo satellites.csv', index = False)
+
+  store_data()
 
   return 'Function ran successfully'
