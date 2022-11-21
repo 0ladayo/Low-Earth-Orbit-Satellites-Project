@@ -291,37 +291,23 @@ def plot_piechart(year):
 def plot_map(n, satellite_name):
     
     try:
-    
-        lon_list = []
-
-        lat_list = []
-
-        alt_list = []
-
-        obj_name_list = []
-        
-        time_list = []
 
         time = datetime.now()
 
         orb = Orbital(satellite_name)
 
         lon, lat = orb.get_lonlatalt(time)[0], orb.get_lonlatalt(time)[1]
-
-        lon_list.append(lon)
-
-        lat_list.append(lat)
-
-        obj_name_list.append(satellite_name)
         
-        for i in range(121):
-            
-            time_list.append(time-timedelta(minutes = i))
-        
-        for i in time_list:
-            
-            alt_list.append(orb.get_lonlatalt(i)[2])
+        lon_list = [lon]
 
+        lat_list = [lat]
+
+        obj_name_list = [satellite_name]
+
+        time_list = [time-timedelta(minutes = i) for i in range(121)]
+
+        alt_list = [orb.get_lonlatalt(i)[2] for i in time_list]
+        
         df_4 = pd.DataFrame({'ObjectName': obj_name_list, 'Latitude': lat_list, 'Longitude': lon_list})
         
         df_5 = pd.DataFrame({'TimeStamp': time_list, 'Altitude': alt_list})
