@@ -306,15 +306,26 @@ def active_leo_sat(request):
     return active_sat_leo_df4
 
   active_sat_leo_df4 = drop_duplicates2()
+  
+  def bq_table_schema():
+    
+    table_schema = [{'name': 'ObjectName', 'type': 'STRING'},
+                    
+                    {'name': 'YearOfLaunch', 'type': 'STRING'},
+                    
+                    {'name': 'Purpose', 'type': 'STRING'}
+                   
+                   ]
+    
+    return table_schema
 
-  def store_data():
+  def save_to_bq_table():
     
-    """Stores the DataFrame in a google cloud storage
-    
-    bucket"""
-    
-    return active_sat_leo_df4.to_csv('gs://active-leo-satellites/active leo satellites.csv', index = False)
+    return active_sat_leo_df4.to_gbq('dataset.active satellites table', if_exists = 'replace',
+                                     
+                                     table_schema = bq_table_schema(), project_id = 'leo-satellite-overview-project' )
 
-  store_data()
+
+  save_to_bq_table()
 
   return 'Function ran successfully'
