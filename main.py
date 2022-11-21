@@ -33,11 +33,8 @@ api_token = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 # In[3]:
 
-client = bigquery.Client()
 
-query_string = "SELECT * FROM `leo-satellite-overview-project.dataset.active satellites table` "
-
-df = pandas_gbq.read_gbq(query_string, project_id = 'leo-satellite-overview-project')
+df = pd.read_csv('gs://active-leo-satellites/active leo satellites.csv')
 
 
 # In[ ]:
