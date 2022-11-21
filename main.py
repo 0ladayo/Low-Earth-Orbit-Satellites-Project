@@ -6,6 +6,10 @@
 
 import pandas as pd
 
+import pandas_gbq
+
+from google.cloud import bigquery
+
 import dash
 
 import dash_bootstrap_components as dbc
@@ -29,8 +33,11 @@ api_token = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 # In[3]:
 
+client = bigquery.Client()
 
-df = pd.read_csv('gs://active-leo-satellites/active leo satellites.csv')
+query_string = "SELECT * FROM `leo-satellite-overview-project.dataset.active satellites table` "
+
+df = pandas_gbq.read_gbq(query_string, project_id = 'leo-satellite-overview-project')
 
 
 # In[ ]:
