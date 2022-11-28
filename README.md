@@ -13,7 +13,7 @@
 
 #### Google Cloud Function
 
-> the data wrangling.py file was deployed as a function in google cloud. 
+> the [data wrangling.py](https://github.com/0ladayo/Low-Earth-Orbit-Satellites-Project/blob/master/ETL%20folder/data%20wrangling.py) file was deployed as a function in google cloud. 
 
 #### Google Cloud Scheduler
 
@@ -33,7 +33,7 @@
 
 #### Google App Engine (GAE)
 
-> main.py file was deployed to Google App Engine
+> [main.py file](https://github.com/0ladayo/Low-Earth-Orbit-Satellites-Project/blob/master/Dash-Plotly/main.py) was deployed to Google App Engine
 
 
 ### Output
