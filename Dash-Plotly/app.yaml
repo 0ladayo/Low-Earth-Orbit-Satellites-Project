@@ -1,2 +1,3 @@
-runtime: python39
+runtime: python11
 service: default
+instance_class: F4

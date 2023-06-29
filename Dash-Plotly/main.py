@@ -6,9 +6,7 @@
 
 import pandas as pd
 
-import pandas_gbq
-
-from google.cloud import bigquery
+import pyarrow
 
 import dash
 
@@ -18,7 +16,7 @@ from dash import dcc, html
 
 from dash.dependencies import Input, Output
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from pyorbital.orbital import Orbital
 
@@ -34,25 +32,19 @@ api_token = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 # In[3]:
 
 
-df = pd.read_csv('gs://active-leo-satellites/active leo satellites.csv')
+df = pd.read_parquet('gs://active-leo-satellites/active leo satellites.parquet', engine = 'pyarrow')
 
 
 # In[ ]:
 
 
-df_1 = df['YearOfLaunch'].value_counts().rename_axis('YearOfLaunch').reset_index(name = 'Counts')
-
-
-# In[ ]:
-
-
-df_1 = df_1.sort_values(by = ['YearOfLaunch'])
+df_1 = pd.read_parquet('gs://active-leo-satellites/active leo satellites mod1.parquet', engine = 'pyarrow')
 
 
 # In[7]:
 
 
-df_2 = df.groupby('YearOfLaunch')['Purpose'].value_counts().rename_axis(['YearOfLaunch','Purpose']).reset_index(name = 'Counts')
+df_2 = pd.read_parquet('gs://active-leo-satellites/active leo satellites mod2.parquet', engine = 'pyarrow')
 
 
 # In[8]:
@@ -232,7 +224,7 @@ _app.layout = html.Div([
                  
                  dcc.Graph(
                      
-                     id = 'satellite purpose pie chart'
+                     id = 'satellite purpose bar chart'
                  
                  )
              
@@ -253,25 +245,21 @@ _app.layout = html.Div([
 
 @_app.callback(
     
-    Output('satellite purpose pie chart', 'figure'),
+    Output('satellite purpose bar chart', 'figure'),
     
     Input('year of launch dropdown', 'value'))
 
-def plot_piechart(year):
+def plot_barchart(year):
     
     df_3 = df_2[df_2['YearOfLaunch'] == year]
     
-    colors = {'colors':['rgb(99,110,250)', 'rgb(239,85,59)', 'rgb(255,215,0)',
-                               
-                               'rgb(171,99,250)', 'rgb(0,204,150)', 'rgb(255,140,0)']}
+    fig = go.Figure([go.Bar(x = df_3['Counts'], y = df_3['Purpose'].unique(), orientation = 'h', width = 0.25, marker_color = 'rgb(99, 110, 250)')])
     
-    fig = go.Figure(data = [go.Pie(labels = df_3['Purpose'].unique(), values = df_3['Counts'])])
+    fig.update_layout(margin = dict(l = 20, r = 20, t = 20, b = 20), plot_bgcolor = 'rgb(255, 255, 255)', paper_bgcolor='rgb(255, 255, 255)', height = 700, title = {'text':'Proportion of Active Low Earth Orbit Satellites by Purpose','x':0.5, 'y':0.98})
     
-    fig.update_layout(height = 700, title = {'text':'Proportion of Active Low Earth Orbit Satellites by Purpose','x':0.5, 'y':0.98})
-    
-    fig.update_traces(textinfo = 'label+value', textfont_size = 20, textfont_color = 'rgb(0,0,0)',
-                     
-                     marker = colors)
+    fig.update_yaxes(categoryorder = 'total ascending', gridcolor = 'rgb(243, 243, 243)', title = 'Satellites Purpose', tickfont_size = 15)
+
+    fig.update_xaxes(title = 'Counts', linecolor = 'rgb(243, 243, 243)', tickfont_size = 13)
     
     return fig
 

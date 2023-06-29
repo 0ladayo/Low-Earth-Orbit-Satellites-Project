@@ -11,3 +11,7 @@ openpyxl
 xlrd
 
 pyorbital
+
+pyarrow
+
+fsspec
