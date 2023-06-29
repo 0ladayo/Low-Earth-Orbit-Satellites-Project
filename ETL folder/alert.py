@@ -2,7 +2,7 @@ from sendgrid import SendGridAPIClient
 
 from sendgrid.helpers.mail import Mail
 
-sg_api_key = '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'
+sg_api_key = '****************************************************************************'
 
 sender_email = 'oladayo.ak@gmail.com'
 
