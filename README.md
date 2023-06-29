@@ -2,8 +2,8 @@
 
 > In this project, I built a web application that shows the position and altitude of active satellites orbiting the Low Earth Orbit in near real time. The web application also shows the distribution of the count of active low earth orbit satellites vs year of launch and also the proportion of active low earth orbit satellites by purpose.
 
-### Workflow
-![](https://github.com/0ladayo/Low-Earth-Orbit-Satellites-Project/blob/master/Workflow.png)
+### Architecture Workflow
+![](https://github.com/0ladayo/Low-Earth-Orbit-Satellites-Project/blob/master/architecture%20workflow.png)
 
 ### Languages and Tools Used
 
@@ -34,13 +34,6 @@
 #### Google App Engine (GAE)
 
 > [main.py file](https://github.com/0ladayo/Low-Earth-Orbit-Satellites-Project/blob/master/Dash-Plotly/main.py) was deployed to Google App Engine
-
-
-### Output
-
->[Low Earth Orbit Satellites Project Web Application](https://leo-satellite-overview-project.nw.r.appspot.com/)
-
-![](https://github.com/0ladayo/Low-Earth-Orbit-Satellites-Project/blob/master/web%20app.jpg)
 
 ### Blog
 
