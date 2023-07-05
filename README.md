@@ -13,7 +13,7 @@
 
 #### Google Cloud Function
 
-> the [data wrangling.py](https://github.com/0ladayo/Low-Earth-Orbit-Satellites-Project/blob/master/ETL%20folder/data%20wrangling.py) file was deployed as a function in google cloud. 
+> the [etl-function.py](https://github.com/0ladayo/Low-Earth-Orbit-Satellites-Project/blob/master/ETL%20folder/etl-function.py) file was deployed as a function in google cloud. 
 
 #### Google Cloud Scheduler
 
