@@ -26,7 +26,7 @@ import plotly.graph_objects as go
 # In[2]:
 
 
-api_token = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+api_token = '***************************************************************************************'
 
 
 # In[3]:
